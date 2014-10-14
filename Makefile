@@ -1,9 +1,10 @@
 all:
-	gcc -Wall -pedantic -o c_daemon c_daemon.c
+	gcc -Wall -pedantic -o c_server c_server.c
+	gcc -Wall -pedantic -o client client.c
 clean:
-	rm -f a.out c_daemon
+	rm -f c_daemon a.out client c_server
 install:
-	cp -p c_daemon /usr/local/bin/c_daemon
-	cp -p c_daemon.sh /etc/rc.d/init.d/c_daemon
-	chkconfig --add c_daemon
-	chkconfig --level 345 c_daemon on
+	cp -p c_server /usr/local/bin/server
+	cp -p c_server.sh /etc/rc.d/init.d/c_server
+	chkconfig --add c_server
+	chkconfig --level 345 c_server on
