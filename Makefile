@@ -2,6 +2,9 @@ CC_OPTS=-Wall -Wextra -Werror -pedantic
 all:
 	gcc $(CC_OPTS) -o c_server c_server.c
 	gcc $(CC_OPTS) -o client client.c
+daemon:
+	gcc $(CC_OPTS) -DDAEMONIZE -o c_server c_server.c
+	gcc $(CC_OPTS) -o client client.c
 clean:
 	rm -f c_daemon a.out client c_server
 install:

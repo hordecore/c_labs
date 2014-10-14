@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <sys/stat.h>
 #include <syslog.h>
+#include <arpa/inet.h>
 
 #define PORT 1488
 
@@ -38,8 +39,9 @@ void skeleton_daemon(void) {
 
 void do_listen(void) {
 	int sock, listener;
-	struct sockaddr_in addr, client_addr;
+	struct sockaddr_in addr, c_addr;
 	char buf[1024];
+	char c_addr_s[INET_ADDRSTRLEN];
 	int bytes_read;
 
 	listener = socket(AF_INET, SOCK_STREAM, 0);
@@ -66,6 +68,12 @@ void do_listen(void) {
 			exit(3);
 		}
 
+		inet_ntop(AF_INET, &(c_addr.sin_addr), c_addr_s, INET_ADDRSTRLEN);
+#ifndef DAEMONIZE
+		printf("%d\n", c_addr.sin_addr.s_addr);
+		printf("%s\n", c_addr_s);
+#endif /* lol */
+
 		while(1) {
 			bytes_read = recv(sock, buf, 1024, 0);
 			if(bytes_read <= 0)
@@ -78,7 +86,9 @@ void do_listen(void) {
 }
 
 int main(void) {
+#ifdef DAEMONIZE
 	skeleton_daemon();
+#endif
 	syslog(LOG_NOTICE, "daemon started.");
 	do_listen();
 	syslog(LOG_NOTICE, "daemon terminated.");
