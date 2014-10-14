@@ -1,6 +1,7 @@
+CC_OPTS=-Wall -Wextra -Werror -pedantic
 all:
-	gcc -Wall -pedantic -o c_server c_server.c
-	gcc -Wall -pedantic -o client client.c
+	gcc $(CC_OPTS) -o c_server c_server.c
+	gcc $(CC_OPTS) -o client client.c
 clean:
 	rm -f c_daemon a.out client c_server
 install:
