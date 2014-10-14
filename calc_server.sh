@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# c_daemon		Startup script for c_daemon.
+# calc_server		Startup script for calc_server.
 #
 # chkconfig: 2345 12 88
 # description: Syslog is the facility by which many daemons use to log \
 # messages to various system log files.	It is a good idea to always \
-# run c_daemon.
+# run calc_server.
 ### BEGIN INIT INFO
 # Provides: $syslog
 # Required-Start: $local_fs
@@ -19,7 +19,7 @@
 # Source function library.
 . /etc/init.d/functions
 
-prog=c_daemon
+prog=calc_server
 RETVAL=0
 PIDFILE=/var/run/$prog.pid
 

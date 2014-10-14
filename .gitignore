@@ -1,4 +1,4 @@
-c_daemon
+calc_server
+calc_client
+*.o
 a.out
-c_server
-client
