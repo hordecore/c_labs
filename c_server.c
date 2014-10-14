@@ -43,6 +43,7 @@ void do_listen(void) {
 	char buf[1024];
 	char c_addr_s[INET_ADDRSTRLEN];
 	int bytes_read;
+	socklen_t len = sizeof(c_addr);
 
 	listener = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -62,16 +63,17 @@ void do_listen(void) {
 	listen(listener, 1);
 
 	while(1) {
-		sock = accept(listener, NULL, NULL);
+		sock = accept(listener, (struct sockaddr *)&c_addr, &len);
 		if(sock < 0) {
 			perror("accept");
 			exit(3);
 		}
 
 		inet_ntop(AF_INET, &(c_addr.sin_addr), c_addr_s, INET_ADDRSTRLEN);
-#ifndef DAEMONIZE
-		printf("%d\n", c_addr.sin_addr.s_addr);
-		printf("%s\n", c_addr_s);
+#ifdef DAEMONIZE
+		syslog(LOG_NOTICE, "someone connected from %s:%u\n", c_addr_s, ntohs(c_addr.sin_port));
+#else
+		printf("%s:%u\n", c_addr_s, ntohs(c_addr.sin_port));
 #endif /* lol */
 
 		while(1) {
@@ -89,7 +91,7 @@ int main(void) {
 #ifdef DAEMONIZE
 	skeleton_daemon();
 #endif
-	syslog(LOG_NOTICE, "daemon started.");
+	syslog(LOG_NOTICE, "%s", "daemon started.");
 	do_listen();
 	syslog(LOG_NOTICE, "daemon terminated.");
 	closelog();
